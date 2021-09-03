@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -19,27 +21,92 @@ public class DeviceRepositoryTest {
     @Autowired
     private DeviceRepository deviceRepository;
 
-
     @Test
-    public void updateDevice() {
+    public void save() {
+        Device savedDevice = deviceRepository.save(DeviceObjectMother.defaultDevice());
 
-        Device device = deviceRepository.save(DeviceObjectMother.defaultDevice());
-
-        device.update(DeviceObjectMother.updateRequest());
-
-        Device findDevice = deviceRepository.findById(1L).get();
-
-        assertEquals("updatedSerialNumber",findDevice.getSerialNumber());
-        assertEquals("updatedMacAddress",findDevice.getMacAddress());
-        assertEquals("updatedQrCode",findDevice.getQrCode());
+        assertEquals("serialNumber",savedDevice.getSerialNumber());
+        assertEquals("macAddress",savedDevice.getMacAddress());
+        assertEquals("qrCode",savedDevice.getQrCode());
 
     }
 
     @Test
-    public void changeDeviceStatus() {
+    public void findById() {
+        Device findDevice = deviceRepository
+                .findById(deviceRepository.save(DeviceObjectMother.defaultDevice())
+                        .getDeviceId()).get();
+
+        assertEquals("serialNumber",findDevice.getSerialNumber());
+        assertEquals("macAddress",findDevice.getMacAddress());
+        assertEquals("qrCode",findDevice.getQrCode());
+    }
+
+    @Test
+    public void findBySerialNumber() {
+        Device findDevice = deviceRepository
+                .findBySerialNumber(deviceRepository.save(DeviceObjectMother.defaultDevice())
+                        .getSerialNumber()).get();
+
+        assertEquals("serialNumber",findDevice.getSerialNumber());
+        assertEquals("macAddress",findDevice.getMacAddress());
+        assertEquals("qrCode",findDevice.getQrCode());
+    }
+
+    @Test
+    public void findByMacAddress() {
+        Device findDevice = deviceRepository
+                .findByMacAddress(deviceRepository.save(DeviceObjectMother.defaultDevice())
+                        .getMacAddress()).get();
+
+        assertEquals("serialNumber",findDevice.getSerialNumber());
+        assertEquals("macAddress",findDevice.getMacAddress());
+        assertEquals("qrCode",findDevice.getQrCode());
+    }
+
+    @Test
+    public void findByQrCode() {
+        Device findDevice = deviceRepository
+                .findByQrCode(deviceRepository.save(DeviceObjectMother.defaultDevice())
+                        .getQrCode()).get();
+
+        assertEquals("serialNumber",findDevice.getSerialNumber());
+        assertEquals("macAddress",findDevice.getMacAddress());
+        assertEquals("qrCode",findDevice.getQrCode());
+    }
+
+    @Test
+    public void findBySerialNumberContaining() {
+
+        deviceRepository.save(DeviceObjectMother.defaultDevice());
+
+        List<Device> deviceList = deviceRepository
+                .findBySerialNumberContaining("serialNumber");
+
+        assertEquals(1,deviceList.size());
+    }
+
+    @Test
+    public void findByMacAddressContaining() {
+
+        deviceRepository.save(DeviceObjectMother.defaultDevice());
+
+        List<Device> deviceList = deviceRepository
+                .findByMacAddressContaining("macAddress");
+
+        assertEquals(1,deviceList.size());
 
     }
 
+    @Test
+    public void findByQrCodeContaining() {
 
+        deviceRepository.save(DeviceObjectMother.defaultDevice());
 
+        List<Device> deviceList = deviceRepository
+                .findByQrCodeContaining("qrCode");
+
+        assertEquals(1,deviceList.size());
+
+    }
 }

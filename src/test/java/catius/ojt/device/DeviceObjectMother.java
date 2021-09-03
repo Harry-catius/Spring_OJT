@@ -26,6 +26,17 @@ public class DeviceObjectMother {
                 .build();
     }
 
+    public static Device defaultTestDevice() {
+        return Device.builder()
+                .deviceId(5L)
+                .serialNumber("testSerialNumber")
+                .macAddress("testMacAddress")
+                .qrCode("testQrCode")
+                .status(DeviceStatus.ACTIVE)
+                .discardStatus(DiscardStatus.MAINTAIN)
+                .build();
+    }
+
     public static List<Device> defaultDeviceList() {
         return Arrays.asList(
                 Device.builder()
