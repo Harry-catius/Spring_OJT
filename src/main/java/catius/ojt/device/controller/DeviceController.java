@@ -8,6 +8,7 @@ import catius.ojt.device.service.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,7 +24,10 @@ public class DeviceController {
     private final DeviceService deviceService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/devices/register")
+    @PostMapping(value = "/devices/register",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public DeviceResponseDto registerDevice(@RequestBody @Valid DeviceRequestDto deviceRequestDto) {
         RegisterDeviceDto registerDeviceDto = RegisterDeviceDto.toDto(deviceRequestDto);
 
@@ -32,7 +36,9 @@ public class DeviceController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/devices")
+    @GetMapping(value = "/devices",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DeviceResponseDto> findAllDevice(
             @RequestParam(name = "serialnumber", required = false ) String serialNumber,
             @RequestParam(name = "macaddress",required = false) String macAddress,
@@ -46,7 +52,10 @@ public class DeviceController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/devices/{deviceId}")
+    @GetMapping(value = "/devices/{deviceId}",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public DeviceResponseDto findOne(@PathVariable("deviceId") Long deviceId) {
         SelectDeviceDto device = deviceService.findOne(deviceId);
 
@@ -55,18 +64,21 @@ public class DeviceController {
 
     // 폐기된 기기 전체 조회
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/devices/discard")
+    @GetMapping(value = "/devices/discard",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DiscardedDeviceResponseDto> findAllDiscardedDevice() {
         List<SelectDiscardedDeviceDto> discardedDevices = deviceService.findAllDiscardedDevice();
-        List<DiscardedDeviceResponseDto> discardedDeviceList = discardedDevices.stream()
+
+        return discardedDevices.stream()
                 .map(DiscardedDeviceResponseDto::fromDto)
                 .collect(Collectors.toList());
-
-        return discardedDeviceList;
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/devices/{deviceId}")
+    @PutMapping(value = "/devices/{deviceId}",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public DeviceResponseDto updateDevice(@PathVariable("deviceId") Long deviceId, @RequestBody @Valid DeviceRequestDto deviceRequestDto) {
         UpdateDeviceDto updateDeviceDto = UpdateDeviceDto.toEntity(deviceRequestDto);
 
@@ -76,7 +88,9 @@ public class DeviceController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/devices/{deviceId}/status")
+    @PutMapping(value = "/devices/{deviceId}/status",
+            consumes= MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public DeviceResponseDto changeDeviceStatus(@PathVariable("deviceId") Long deviceId) {
         UpdateDeviceDto device = deviceService.changeDeviceStatus(deviceId);
 
@@ -85,7 +99,8 @@ public class DeviceController {
 
     // @ResponseStatus(HttpStatus.OK)
      @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/devices/{deviceId}")
+    @DeleteMapping(value = "/devices/{deviceId}",
+            consumes= MediaType.APPLICATION_JSON_VALUE)
     public void deleteDevice(@PathVariable("deviceId") Long deviceId) {
         RegisterDiscardedDeviceDto device = deviceService.deleteDevice(deviceId);
 
