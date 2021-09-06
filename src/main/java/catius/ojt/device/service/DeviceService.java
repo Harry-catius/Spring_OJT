@@ -5,19 +5,19 @@ import catius.ojt.device.service.dto.*;
 import java.util.List;
 
 public interface DeviceService {
-    RegisterDeviceDto register(RegisterDeviceDto registerDeviceDto);
+    DeviceDto register(DeviceDto deviceDto);
 
-    SelectDeviceDto findOne(Long deviceId);
+    DeviceDto findOne(Long deviceId);
 
-    List<SelectDeviceDto> findDevices(String serialNumber, String macAddress, String qrCode);
+    List<DeviceDto> findDevices(String serialNumber, String macAddress, String qrCode);
 
-    List<SelectDiscardedDeviceDto> findAllDiscardedDevice();
+    List<DiscardDeviceDto> findAllDiscardedDevice();
 
-    UpdateDeviceDto updateDevice(Long deviceId, UpdateDeviceDto updateDeviceDto);
+    DeviceDto updateDevice(Long deviceId, DeviceDto updateDeviceDto);
 
-    RegisterDiscardedDeviceDto deleteDevice(Long deviceId);
+    DiscardDeviceDto deleteDevice(Long deviceId);
 
-    UpdateDeviceDto changeDeviceStatus(Long deviceId);
+    DeviceDto changeDeviceStatus(Long deviceId);
 
     void validateDeviceAttribute(String serialNumber, String macAddress, String qrCode);
 

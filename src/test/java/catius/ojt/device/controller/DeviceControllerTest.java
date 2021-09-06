@@ -3,7 +3,7 @@ package catius.ojt.device.controller;
 import catius.ojt.device.DeviceObjectMother;
 import catius.ojt.device.DiscardDeviceObjectMother;
 import catius.ojt.device.service.DeviceServiceImpl;
-import catius.ojt.device.service.dto.SelectDeviceDto;
+import catius.ojt.device.service.dto.DeviceDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -53,7 +53,7 @@ class DeviceControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(DeviceObjectMother.registerRequestDto());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/devices/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/devices/register")
                         .content(json)
                         .contentType(contentType)
                 )
@@ -68,9 +68,9 @@ class DeviceControllerTest {
     void findAllDevice() throws Exception {
 
         when(deviceService.findDevices(null,null,null))
-                .thenReturn(DeviceObjectMother.defaultSelectDeviceList());
+                .thenReturn(DeviceObjectMother.defaultDeviceListDto());
 
-        mockMvc.perform(get("/api/devices").contentType(contentType))
+        mockMvc.perform(get("/devices").contentType(contentType))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$.[0].serialNumber").value("serialNumber1"))
@@ -85,9 +85,9 @@ class DeviceControllerTest {
     @Test
     void findOne() throws Exception {
         when(deviceService.findOne(anyLong()))
-                .thenReturn(SelectDeviceDto.fromEntity(DeviceObjectMother.defaultDevice()));
+                .thenReturn(DeviceDto.fromEntity(DeviceObjectMother.defaultDevice()));
 
-        mockMvc.perform(get("/api/devices/1").contentType(contentType))
+        mockMvc.perform(get("/devices/1").contentType(contentType))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.serialNumber").value("serialNumber"))
                 .andExpect(jsonPath("$.macAddress").value("macAddress"))
@@ -101,7 +101,7 @@ class DeviceControllerTest {
         when(deviceService.findAllDiscardedDevice())
                 .thenReturn(DiscardDeviceObjectMother.defaultDiscardedDeviceList());
 
-        mockMvc.perform(get("/api/devices/discard").contentType(contentType))
+        mockMvc.perform(get("/devices/discard").contentType(contentType))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].discardedDeviceId").value(1L))
                 .andExpect(jsonPath("$.[0].discardStatus").value("DISCARD"))
@@ -117,7 +117,7 @@ class DeviceControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(DeviceObjectMother.updateRequestDto());
 
-        mockMvc.perform(put("/api/devices/1")
+        mockMvc.perform(put("/devices/1")
                         .content(json)
                         .contentType(contentType))
                 .andExpect(status().isOk())
@@ -129,7 +129,7 @@ class DeviceControllerTest {
     @Test
     void changeDeviceStatus() throws Exception {
 
-        mockMvc.perform(put("/api/devices/1/status").contentType(contentType))
+        mockMvc.perform(put("/devices/1/status").contentType(contentType))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -140,7 +140,7 @@ class DeviceControllerTest {
     @Test
     void deleteDevice() throws Exception {
 
-        mockMvc.perform(delete("/api/devices/1").contentType(contentType))
+        mockMvc.perform(delete("/devices/1").contentType(contentType))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 

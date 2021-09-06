@@ -6,9 +6,8 @@ import catius.ojt.device.domain.DeviceStatus;
 import catius.ojt.device.exception.DeviceException;
 import catius.ojt.device.repository.DeviceRepository;
 import catius.ojt.device.repository.DiscardDeviceRepository;
-import catius.ojt.device.service.dto.SelectDeviceDto;
-import catius.ojt.device.service.dto.SelectDiscardedDeviceDto;
-import catius.ojt.device.service.dto.UpdateDeviceDto;
+import catius.ojt.device.service.dto.DeviceDto;
+import catius.ojt.device.service.dto.DiscardDeviceDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -61,7 +60,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void register_shouldFailIfSerialNumberEqual() {
+    public void shouldFailIfSerialNumberEqual() {
         given(deviceRepository.findBySerialNumber(anyString()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -72,7 +71,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void register_shouldFailIfMacAddressEqual() {
+    public void shouldFailIfMacAddressEqual() {
         given(deviceRepository.findByMacAddress(anyString()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -83,7 +82,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void register_shouldFailIfQrCodeEqual() {
+    public void shouldFailIfQrCodeEqual() {
         given(deviceRepository.findByQrCode(anyString()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -110,7 +109,7 @@ public class DeviceServiceTest {
         given(deviceRepository.findAll())
                 .willReturn(DeviceObjectMother.defaultDeviceList());
 
-        List<SelectDeviceDto> deviceList = deviceService.findDevices(null,null,null);
+        List<DeviceDto> deviceList = deviceService.findDevices(null,null,null);
 
         assertEquals(2,deviceList.size());
     }
@@ -118,9 +117,9 @@ public class DeviceServiceTest {
     @Test
     public void findAllDiscardedDevice() {
         given(discardDeviceRepository.findAll())
-                .willReturn(DeviceObjectMother.defaultDiscardedDeviceList());
+                .willReturn(DeviceObjectMother.defaultDiscardDeviceList());
 
-        List<SelectDiscardedDeviceDto> discardedDeviceList = deviceService.findAllDiscardedDevice();
+        List<DiscardDeviceDto> discardedDeviceList = deviceService.findAllDiscardedDevice();
 
         assertEquals(2,discardedDeviceList.size());
     }
@@ -131,7 +130,7 @@ public class DeviceServiceTest {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
-        UpdateDeviceDto updatedDevice = deviceService.updateDevice(1L, DeviceObjectMother.updateRequestDto());
+        DeviceDto updatedDevice = deviceService.updateDevice(1L, DeviceObjectMother.updateRequestDto());
 
         assertEquals("updatedSerialNumber",updatedDevice.getSerialNumber());
         assertEquals("updatedMacAddress",updatedDevice.getMacAddress());
@@ -143,7 +142,7 @@ public class DeviceServiceTest {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
-        UpdateDeviceDto updateDeviceDto = deviceService.changeDeviceStatus(1L);
+        DeviceDto updateDeviceDto = deviceService.changeDeviceStatus(1L);
 
         assertEquals(DeviceStatus.INACTIVE, updateDeviceDto.getStatus());
     }
@@ -155,14 +154,14 @@ public class DeviceServiceTest {
 
         deviceService.deleteDevice(1L);
 
-        List<SelectDeviceDto> deviceList = deviceService.findDevices(null, null, null);
+        List<DeviceDto> deviceList = deviceService.findDevices(null, null, null);
 
         assertEquals(0, deviceList.size());
     }
 
     //기기가 활성화 상태일때 삭제시 exception 에러
     @Test
-    public void delete_shouldFailIfActive() {
+    public void shouldFailIfActive() {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 

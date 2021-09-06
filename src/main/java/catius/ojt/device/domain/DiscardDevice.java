@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor()
 @AllArgsConstructor
 @Builder
-public class DiscardedDevice {
+public class DiscardDevice {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
@@ -22,14 +22,5 @@ public class DiscardedDevice {
 
     @Enumerated(EnumType.STRING)
     private DiscardStatus discardStatus; // ACTIVE, INACTIVE
-
-    public static DiscardedDevice toEntity(Device device) {
-        return DiscardedDevice.builder()
-                .discardedDeviceId(device.getDeviceId())
-                .discardStatus(DiscardStatus.DISCARD)
-                .build();
-    }
-
-
 
 }

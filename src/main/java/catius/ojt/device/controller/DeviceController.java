@@ -1,8 +1,8 @@
 package catius.ojt.device.controller;
 
-import catius.ojt.device.controller.dto.request.DeviceRequestDto;
-import catius.ojt.device.controller.dto.response.DeviceResponseDto;
-import catius.ojt.device.controller.dto.response.DiscardedDeviceResponseDto;
+import catius.ojt.device.controller.dto.request.DeviceRequest;
+import catius.ojt.device.controller.dto.response.DeviceResponse;
+import catius.ojt.device.controller.dto.response.DiscardDeviceResponse;
 import catius.ojt.device.service.DeviceService;
 import catius.ojt.device.service.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class DeviceController {
     private final DeviceService deviceService;
 
@@ -28,26 +27,25 @@ public class DeviceController {
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public DeviceResponseDto registerDevice(@RequestBody @Valid DeviceRequestDto deviceRequestDto) {
-        RegisterDeviceDto registerDeviceDto = RegisterDeviceDto.toDto(deviceRequestDto);
+    public DeviceResponse registerDevice(@RequestBody @Valid DeviceRequest deviceRequest) {
+        DeviceDto findDevice = deviceService.register(DeviceRequest.toDto(deviceRequest));
 
-        RegisterDeviceDto findDevice = deviceService.register(registerDeviceDto);
-        return DeviceResponseDto.fromDto(findDevice);
+        return DeviceResponse.fromDto(findDevice);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/devices",
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<DeviceResponseDto> findAllDevice(
+    public List<DeviceResponse> findAllDevice(
             @RequestParam(name = "serialnumber", required = false ) String serialNumber,
             @RequestParam(name = "macaddress",required = false) String macAddress,
             @RequestParam(name = "qrcode",required = false) String qrCode) {
 
-        List<SelectDeviceDto> deviceList = deviceService.findDevices(serialNumber, macAddress, qrCode);
+        List<DeviceDto> deviceList = deviceService.findDevices(serialNumber, macAddress, qrCode);
 
         return deviceList.stream()
-                .map(DeviceResponseDto::fromDto)
+                .map(DeviceResponse::fromDto)
                 .collect(Collectors.toList());
     }
 
@@ -56,10 +54,10 @@ public class DeviceController {
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public DeviceResponseDto findOne(@PathVariable("deviceId") Long deviceId) {
-        SelectDeviceDto device = deviceService.findOne(deviceId);
+    public DeviceResponse findOne(@PathVariable("deviceId") Long deviceId) {
+        DeviceDto device = deviceService.findOne(deviceId);
 
-        return DeviceResponseDto.fromDto(device);
+        return DeviceResponse.fromDto(device);
     }
 
     // 폐기된 기기 전체 조회
@@ -67,11 +65,11 @@ public class DeviceController {
     @GetMapping(value = "/devices/discard",
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<DiscardedDeviceResponseDto> findAllDiscardedDevice() {
-        List<SelectDiscardedDeviceDto> discardedDevices = deviceService.findAllDiscardedDevice();
+    public List<DiscardDeviceResponse> findAllDiscardedDevice() {
+        List<DiscardDeviceDto> discardedDevices = deviceService.findAllDiscardedDevice();
 
         return discardedDevices.stream()
-                .map(DiscardedDeviceResponseDto::fromDto)
+                .map(DiscardDeviceResponse::fromDto)
                 .collect(Collectors.toList());
     }
 
@@ -79,31 +77,26 @@ public class DeviceController {
     @PutMapping(value = "/devices/{deviceId}",
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeviceResponseDto updateDevice(@PathVariable("deviceId") Long deviceId, @RequestBody @Valid DeviceRequestDto deviceRequestDto) {
-        UpdateDeviceDto updateDeviceDto = UpdateDeviceDto.toEntity(deviceRequestDto);
+    public DeviceResponse updateDevice(@PathVariable("deviceId") Long deviceId, @RequestBody @Valid DeviceRequest deviceRequest) {
+        DeviceDto device = deviceService.updateDevice(deviceId, DeviceRequest.toDto(deviceRequest));
 
-        UpdateDeviceDto device = deviceService.updateDevice(deviceId, updateDeviceDto);
-
-        return DeviceResponseDto.fromDto(device);
+        return DeviceResponse.fromDto(device);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/devices/{deviceId}/status",
             consumes= MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public DeviceResponseDto changeDeviceStatus(@PathVariable("deviceId") Long deviceId) {
-        UpdateDeviceDto device = deviceService.changeDeviceStatus(deviceId);
+    public DeviceResponse changeDeviceStatus(@PathVariable("deviceId") Long deviceId) {
+        DeviceDto device = deviceService.changeDeviceStatus(deviceId);
 
-        return DeviceResponseDto.fromDto(device);
+        return DeviceResponse.fromDto(device);
     }
 
-    // @ResponseStatus(HttpStatus.OK)
      @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/devices/{deviceId}",
             consumes= MediaType.APPLICATION_JSON_VALUE)
     public void deleteDevice(@PathVariable("deviceId") Long deviceId) {
-        RegisterDiscardedDeviceDto device = deviceService.deleteDevice(deviceId);
-
-       // return DiscardedDeviceResponseDto.fromDto(device);
+        DiscardDeviceDto device = deviceService.deleteDevice(deviceId);
     }
 }

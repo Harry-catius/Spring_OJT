@@ -1,5 +1,7 @@
 package catius.ojt.device.controller.dto.request;
 
+import catius.ojt.device.domain.Device;
+import catius.ojt.device.service.dto.DeviceDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceRequestDto {
+public class DeviceRequest {
 
     @NotEmpty(message = "시리얼 넘버는 필수입니다.")
     private String serialNumber;
@@ -19,5 +21,14 @@ public class DeviceRequestDto {
     private String macAddress;
     @NotEmpty(message = "QR코드는 필수 입니다.")
     private String qrCode;
+
+
+    public static DeviceDto toDto(DeviceRequest deviceRequest) {
+        return DeviceDto.builder()
+                .serialNumber(deviceRequest.getSerialNumber())
+                .macAddress(deviceRequest.getMacAddress())
+                .qrCode(deviceRequest.getQrCode())
+                .build();
+    }
 
 }

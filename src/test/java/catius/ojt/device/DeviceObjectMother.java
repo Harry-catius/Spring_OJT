@@ -1,13 +1,11 @@
 package catius.ojt.device;
 
-import catius.ojt.device.controller.dto.request.DeviceRequestDto;
+import catius.ojt.device.controller.dto.request.DeviceRequest;
 import catius.ojt.device.domain.Device;
 import catius.ojt.device.domain.DeviceStatus;
 import catius.ojt.device.domain.DiscardStatus;
-import catius.ojt.device.domain.DiscardedDevice;
-import catius.ojt.device.service.dto.RegisterDeviceDto;
-import catius.ojt.device.service.dto.SelectDeviceDto;
-import catius.ojt.device.service.dto.UpdateDeviceDto;
+import catius.ojt.device.domain.DiscardDevice;
+import catius.ojt.device.service.dto.DeviceDto;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,17 +19,6 @@ public class DeviceObjectMother {
                 .serialNumber("serialNumber")
                 .macAddress("macAddress")
                 .qrCode("qrCode")
-                .status(DeviceStatus.ACTIVE)
-                .discardStatus(DiscardStatus.MAINTAIN)
-                .build();
-    }
-
-    public static Device defaultTestDevice() {
-        return Device.builder()
-                .deviceId(5L)
-                .serialNumber("testSerialNumber")
-                .macAddress("testMacAddress")
-                .qrCode("testQrCode")
                 .status(DeviceStatus.ACTIVE)
                 .discardStatus(DiscardStatus.MAINTAIN)
                 .build();
@@ -57,16 +44,16 @@ public class DeviceObjectMother {
                     .build());
     }
 
-    public static List<SelectDeviceDto> defaultSelectDeviceList() {
+    public static List<DeviceDto> defaultDeviceListDto() {
         return Arrays.asList(
-                SelectDeviceDto.builder()
+                DeviceDto.builder()
                         .deviceId(1L)
                         .serialNumber("serialNumber1")
                         .macAddress("macAddress1")
                         .qrCode("qrCode1")
                         .status(DeviceStatus.ACTIVE)
                         .build(),
-                SelectDeviceDto.builder()
+                DeviceDto.builder()
                         .deviceId(2L)
                         .serialNumber("serialNumber2")
                         .macAddress("macAddress2")
@@ -75,28 +62,28 @@ public class DeviceObjectMother {
                         .build());
     }
 
-    public static List<DiscardedDevice> defaultDiscardedDeviceList() {
+    public static List<DiscardDevice> defaultDiscardDeviceList() {
         return Arrays.asList(
-                DiscardedDevice.builder()
+                DiscardDevice.builder()
                         .discardedDeviceId(1L)
                         .discardStatus(DiscardStatus.DISCARD)
                         .build(),
-                DiscardedDevice.builder()
+                DiscardDevice.builder()
                         .discardedDeviceId(2L)
                         .discardStatus(DiscardStatus.DISCARD)
                         .build());
     }
 
-    public static DeviceRequestDto registerRequestDto() {
-        return DeviceRequestDto.builder()
+    public static DeviceRequest registerRequestDto() {
+        return DeviceRequest.builder()
                 .serialNumber("serialNumber")
                 .macAddress("macAddress")
                 .qrCode("qrCode")
                 .build();
     }
 
-    public static RegisterDeviceDto registerResponseDto() {
-        return RegisterDeviceDto.builder()
+    public static DeviceDto registerResponseDto() {
+        return DeviceDto.builder()
                 .deviceId(1L)
                 .serialNumber("serialNumber")
                 .macAddress("macAddress")
@@ -105,8 +92,8 @@ public class DeviceObjectMother {
                 .build();
     }
 
-    public static RegisterDeviceDto registerRequest() {
-        return RegisterDeviceDto.builder()
+    public static DeviceDto registerRequest() {
+        return DeviceDto.builder()
                 .serialNumber("serialNumber")
                 .macAddress("macAddress")
                 .qrCode("qrCode")
@@ -114,16 +101,8 @@ public class DeviceObjectMother {
                 .build();
     }
 
-
-    public static Device updateRequest() {
-        return Device.builder()
-                .serialNumber("updatedSerialNumber")
-                .macAddress("updatedMacAddress")
-                .qrCode("updatedQrCode")
-                .build();
-    }
-    public static UpdateDeviceDto updateRequestDto() {
-        return UpdateDeviceDto.builder()
+    public static DeviceDto updateRequestDto() {
+        return DeviceDto.builder()
                 .serialNumber("updatedSerialNumber")
                 .macAddress("updatedMacAddress")
                 .qrCode("updatedQrCode")
@@ -132,9 +111,9 @@ public class DeviceObjectMother {
 
     public static Device deleteRequest() {
         return Device.builder()
-                .serialNumber("updatedSerialNumber")
-                .macAddress("updatedMacAddress")
-                .qrCode("updatedQrCode")
+                .serialNumber("serialNumber")
+                .macAddress("macAddress")
+                .qrCode("qrCode")
                 .status(DeviceStatus.INACTIVE)
                 .discardStatus(DiscardStatus.MAINTAIN)
                 .build();

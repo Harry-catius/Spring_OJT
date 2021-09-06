@@ -1,9 +1,7 @@
 package catius.ojt.device.domain;
 
 
-import catius.ojt.device.service.dto.RegisterDeviceDto;
-import catius.ojt.device.service.dto.SelectDeviceDto;
-import catius.ojt.device.service.dto.UpdateDeviceDto;
+import catius.ojt.device.service.dto.DeviceDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,26 +35,15 @@ public class Device {
     @Enumerated(EnumType.STRING)
     private DiscardStatus discardStatus;
 
-    public static Device toEntity(RegisterDeviceDto registerDeviceDto) {
+    public static Device toEntity(DeviceDto deviceDto) {
         return Device.builder()
-                .serialNumber(registerDeviceDto.getSerialNumber())
-                .macAddress(registerDeviceDto.getMacAddress())
-                .qrCode(registerDeviceDto.getQrCode())
+                .serialNumber(deviceDto.getSerialNumber())
+                .macAddress(deviceDto.getMacAddress())
+                .qrCode(deviceDto.getQrCode())
                 .status(DeviceStatus.ACTIVE)
                 .discardStatus(DiscardStatus.MAINTAIN)
                 .build();
     }
-
-    public static Device toEntity(SelectDeviceDto selectDeviceDto) {
-        return Device.builder()
-                .deviceId(selectDeviceDto.getDeviceId())
-                .serialNumber(selectDeviceDto.getSerialNumber())
-                .macAddress(selectDeviceDto.getMacAddress())
-                .qrCode(selectDeviceDto.getQrCode())
-                .status(selectDeviceDto.getStatus())
-                .build();
-    }
-
 
     public void discardDevice() {
         this.status = DeviceStatus.INACTIVE;
@@ -84,7 +71,5 @@ public class Device {
         if(! "".equals(device.getQrCode()) && device.getQrCode() != null) {
             this.qrCode = device.getQrCode();
         }
-
-
     }
 }
