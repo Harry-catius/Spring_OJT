@@ -14,6 +14,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -169,6 +171,26 @@ public class DeviceServiceTest {
                 () -> deviceService.deleteDevice(1L));
 
         assertEquals(DEVICE_NOT_INACTIVATE, deviceException.getDeviceErrorCode());
+    }
+
+    //  트랜잭션 테스트
+
+    @Test
+    @Transactional
+    public void rollbackTransactionTest() {
+        given(deviceRepository.findById(anyLong()))
+                .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
+
+        
+
 
     }
+
+    // 해당 메소드가 호출되면 새로운 트랜잭션을 시작
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void callNewTransaction() {
+
+    }
+
+
 }

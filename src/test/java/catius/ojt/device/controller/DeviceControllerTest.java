@@ -4,6 +4,7 @@ import catius.ojt.device.DeviceObjectMother;
 import catius.ojt.device.DiscardDeviceObjectMother;
 import catius.ojt.device.service.DeviceServiceImpl;
 import catius.ojt.device.service.dto.DeviceDto;
+import catius.ojt.device.service.dto.DeviceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +86,7 @@ class DeviceControllerTest {
     @Test
     void findOne() throws Exception {
         when(deviceService.findOne(anyLong()))
-                .thenReturn(DeviceDto.fromEntity(DeviceObjectMother.defaultDevice()));
+                .thenReturn(DeviceFactory.getDeviceDto(DeviceObjectMother.defaultDevice()));
 
         mockMvc.perform(get("/devices/1").contentType(contentType))
                 .andExpect(status().isOk())
