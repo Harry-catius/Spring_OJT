@@ -43,10 +43,7 @@ public class DeviceServiceTest {
 
 
     @Test
-    public void register() throws Exception {
-//        given(deviceRepository.findById(anyLong()))
-//                .willReturn(Optional.empty());
-
+    public void register() {
         ArgumentCaptor<Device> captor = ArgumentCaptor.forClass(Device.class);
 
         deviceService.register(DeviceObjectMother.registerRequest());

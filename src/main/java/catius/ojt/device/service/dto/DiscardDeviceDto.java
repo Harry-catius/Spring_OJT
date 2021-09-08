@@ -15,11 +15,11 @@ public class DiscardDeviceDto {
     private Long discardedDeviceId;
     private DiscardStatus discardStatus;
 
-    public static DiscardDeviceDto fromEntity(DiscardDevice discardDevice) {
-        return DiscardDeviceDto.builder()
-                .discardedDeviceId(discardDevice.getDiscardedDeviceId())
-                .discardStatus(discardDevice.getDiscardStatus())
-                .build();
-    }
+//    public static DiscardDeviceDto fromEntity(DiscardDevice discardDevice) {
+//        return DiscardDeviceDto.builder()
+//                .discardedDeviceId(discardDevice.getDiscardedDeviceId())
+//                .discardStatus(discardDevice.getDiscardStatus())
+//                .build();
+//    }
 
 }

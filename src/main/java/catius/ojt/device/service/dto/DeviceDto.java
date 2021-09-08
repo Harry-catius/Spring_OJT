@@ -18,14 +18,4 @@ public class DeviceDto {
     private String qrCode;
     private DeviceStatus status;
 
-//    public static DeviceDto fromEntity(Device device) {
-//        return DeviceDto.builder()
-//                .deviceId(device.getDeviceId())
-//                .serialNumber(device.getSerialNumber())
-//                .macAddress(device.getMacAddress())
-//                .qrCode(device.getQrCode())
-//                .status(device.getStatus())
-//                .build();
-//    }
-
 }

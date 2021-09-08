@@ -4,9 +4,11 @@ import catius.ojt.device.domain.Device;
 import catius.ojt.device.domain.DiscardDevice;
 import catius.ojt.device.exception.DeviceException;
 import catius.ojt.device.repository.DeviceRepository;
+import catius.ojt.device.repository.DeviceSpecification;
 import catius.ojt.device.repository.DiscardDeviceRepository;
 import catius.ojt.device.service.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +45,11 @@ public class DeviceServiceImpl implements DeviceService{
 
     @Override
     public List<DeviceDto> findDevices(String serialNumber, String macAddress, String qrCode) {
+
         List<Device> deviceList;
-        if(serialNumber != null) deviceList = deviceRepository.findBySerialNumberContaining(serialNumber);
-        else if(macAddress != null) deviceList = deviceRepository.findByMacAddressContaining(macAddress);
-        else if(qrCode != null) deviceList = deviceRepository.findByQrCodeContaining(qrCode);
+        if(serialNumber != null) deviceList = deviceRepository.findAll(DeviceSpecification.likeSerialNumber(serialNumber));
+        else if(macAddress != null) deviceList = deviceRepository.findAll(DeviceSpecification.likeMacAddress(macAddress));
+        else if(qrCode != null) deviceList = deviceRepository.findAll(DeviceSpecification.likeQrCode(qrCode));
         else deviceList = deviceRepository.findAll();
 
         if(deviceList.isEmpty()) throw new DeviceException(NO_DEVICE);
