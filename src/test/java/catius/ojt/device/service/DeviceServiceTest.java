@@ -43,7 +43,7 @@ public class DeviceServiceTest {
 
 
     @Test
-    public void register() {
+    public void shouldRegisterDevice() {
         ArgumentCaptor<Device> captor = ArgumentCaptor.forClass(Device.class);
 
         deviceService.register(DeviceObjectMother.registerRequest());
@@ -92,7 +92,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void findOne() {
+    public void shouldFindOne() {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -104,7 +104,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void findAll() {
+    public void shouldFindAllDevice() {
         given(deviceRepository.findAll())
                 .willReturn(DeviceObjectMother.defaultDeviceList());
 
@@ -114,7 +114,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void findAllDiscardedDevice() {
+    public void shouldFindAllDiscardedDevice() {
         given(discardDeviceRepository.findAll())
                 .willReturn(DeviceObjectMother.defaultDiscardDeviceList());
 
@@ -125,7 +125,7 @@ public class DeviceServiceTest {
 
 
     @Test
-    public void updateDevice() {
+    public void shouldUpdateDevice() {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -137,7 +137,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void changeDeviceStatus() {
+    public void shouldChangeDeviceStatus() {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.defaultDevice()));
 
@@ -147,7 +147,7 @@ public class DeviceServiceTest {
     }
 
     @Test
-    public void deleteDevice() {
+    public void shouldDeleteDevice() {
         given(deviceRepository.findById(anyLong()))
                 .willReturn(Optional.of(DeviceObjectMother.deleteRequest()));
 

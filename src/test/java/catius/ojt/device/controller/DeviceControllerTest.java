@@ -48,7 +48,7 @@ class DeviceControllerTest {
                     StandardCharsets.UTF_8);
 
     @Test
-    void registerDevice() throws Exception {
+    void ShouldRegisterDevice() throws Exception {
         given(deviceService.register(any()))
                 .willReturn(DeviceObjectMother.registerResponseDto());
 
@@ -66,7 +66,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void findAllDevice() throws Exception {
+    void shouldFindAllDevice() throws Exception {
 
         when(deviceService.findDevices(null,null,null))
                 .thenReturn(DeviceObjectMother.defaultDeviceListDto());
@@ -84,7 +84,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void findOne() throws Exception {
+    void shouldFindOne() throws Exception {
         when(deviceService.findOne(anyLong()))
                 .thenReturn(DeviceFactory.getDeviceDto(DeviceObjectMother.defaultDevice()));
 
@@ -98,7 +98,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void findAllDiscardedDevice() throws Exception {
+    void shouldFindAllDiscardedDevice() throws Exception {
         when(deviceService.findAllDiscardedDevice())
                 .thenReturn(DiscardDeviceObjectMother.defaultDiscardedDeviceList());
 
@@ -114,7 +114,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void updateDevice() throws Exception {
+    void shouldUpdateDevice() throws Exception {
 
         String json = new ObjectMapper().writeValueAsString(DeviceObjectMother.updateRequestDto());
 
@@ -128,7 +128,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void changeDeviceStatus() throws Exception {
+    void shouldChangeDeviceStatus() throws Exception {
 
         mockMvc.perform(put("/devices/1/status").contentType(contentType))
                 .andExpect(status().isOk())
@@ -139,7 +139,7 @@ class DeviceControllerTest {
     }
 
     @Test
-    void deleteDevice() throws Exception {
+    void shouldDeleteDevice() throws Exception {
 
         mockMvc.perform(delete("/devices/1").contentType(contentType))
                 .andExpect(status().isNoContent())

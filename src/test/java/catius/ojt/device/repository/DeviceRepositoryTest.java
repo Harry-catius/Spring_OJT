@@ -22,7 +22,7 @@ public class DeviceRepositoryTest {
     private DeviceRepository deviceRepository;
 
     @Test
-    public void save() {
+    public void shouldRegisterDevice() {
         Device savedDevice = deviceRepository.save(DeviceObjectMother.defaultDevice());
 
         assertEquals("serialNumber",savedDevice.getSerialNumber());
@@ -32,7 +32,7 @@ public class DeviceRepositoryTest {
     }
 
     @Test
-    public void findById() {
+    public void shouldFindById() {
         Device findDevice = deviceRepository
                 .findById(deviceRepository.save(DeviceObjectMother.defaultDevice())
                         .getDeviceId()).get();
@@ -43,7 +43,7 @@ public class DeviceRepositoryTest {
     }
 
     @Test
-    public void findBySerialNumber() {
+    public void shouldFindBySerialNumber() {
         Device findDevice = deviceRepository
                 .findBySerialNumber(deviceRepository.save(DeviceObjectMother.defaultDevice())
                         .getSerialNumber()).get();
@@ -54,7 +54,7 @@ public class DeviceRepositoryTest {
     }
 
     @Test
-    public void findByMacAddress() {
+    public void shouldFindByMacAddress() {
         Device findDevice = deviceRepository
                 .findByMacAddress(deviceRepository.save(DeviceObjectMother.defaultDevice())
                         .getMacAddress()).get();
@@ -65,7 +65,7 @@ public class DeviceRepositoryTest {
     }
 
     @Test
-    public void findByQrCode() {
+    public void shouldFindByQrCode() {
         Device findDevice = deviceRepository
                 .findByQrCode(deviceRepository.save(DeviceObjectMother.defaultDevice())
                         .getQrCode()).get();
@@ -76,35 +76,32 @@ public class DeviceRepositoryTest {
     }
 
     @Test
-    public void findBySerialNumberContaining() {
+    public void shouldFindBySerialNumberContaining() {
 
         deviceRepository.save(DeviceObjectMother.defaultDevice());
 
-        List<Device> deviceList = deviceRepository
-                .findBySerialNumberContaining("serialNumber");
+        List<Device> deviceList = deviceRepository.findAll(DeviceSpecification.likeSerialNumber("serialNumber"));
 
         assertEquals(1,deviceList.size());
     }
 
     @Test
-    public void findByMacAddressContaining() {
+    public void shouldFindByMacAddressContaining() {
 
         deviceRepository.save(DeviceObjectMother.defaultDevice());
 
-        List<Device> deviceList = deviceRepository
-                .findByMacAddressContaining("macAddress");
+        List<Device> deviceList = deviceRepository.findAll(DeviceSpecification.likeSerialNumber("macAddress"));
 
         assertEquals(1,deviceList.size());
 
     }
 
     @Test
-    public void findByQrCodeContaining() {
+    public void shouldFindByQrCodeContaining() {
 
         deviceRepository.save(DeviceObjectMother.defaultDevice());
 
-        List<Device> deviceList = deviceRepository
-                .findByQrCodeContaining("qrCode");
+        List<Device> deviceList = deviceRepository.findAll(DeviceSpecification.likeSerialNumber("qrCode"));
 
         assertEquals(1,deviceList.size());
 

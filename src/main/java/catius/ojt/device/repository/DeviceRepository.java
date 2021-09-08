@@ -17,10 +17,10 @@ public interface DeviceRepository extends JpaRepository<Device,Long>, JpaSpecifi
 
     Optional<Device> findByQrCode(String qrCode);
 
-    List<Device> findBySerialNumberContaining(String serialNumber);
-
-    List<Device> findByMacAddressContaining(String macAddress);
-
-    List<Device> findByQrCodeContaining(String qrCode);
+//    List<Device> findBySerialNumberContaining(String serialNumber);
+//
+//    List<Device> findByMacAddressContaining(String macAddress);
+//
+//    List<Device> findByQrCodeContaining(String qrCode);
 
 }
